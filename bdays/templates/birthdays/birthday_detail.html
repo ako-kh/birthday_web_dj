@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-center align-items-center flex-column">
+        <p>{{ object.name }} - {{ object.date }}</p>
+
+        <p>gift idea: {{ object.gift_idea|default:"No ideas yet"}}</p>
+
+        <p>
+                <a href="{% url 'bdays:bday-update' object.id %}">update</a>
+                -
+                <a href="{% url 'bdays:bday-delete' object.id %}">delete</a>
+        </p>
+</div>
+{% endblock %}

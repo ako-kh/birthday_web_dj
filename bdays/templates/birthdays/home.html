@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% for person in object_list %}
+        <p>
+            {{ person.name }} - {{ person.date }}
+            -
+            <a href="{% url 'bdays:bday-detail' person.id %}">Details</a>
+        </p>
+    {% endfor %}
+
+{% endblock %}
