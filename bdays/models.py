@@ -9,3 +9,6 @@ class BirthdayModel(models.Model):
 
     def get_absolute_url(self):
         return reverse('bdays:bday-list')
+
+    def __str__(self):
+        return self.name
