@@ -8,9 +8,8 @@ from django.views.generic import (
     ListView,
     UpdateView,
 )
-
 from .models import BirthdayModel
-
+from .utils.utils import days_until_birthday
 
 class BdaysListView(ListView):
     template_name = "birthdays/home.html"
@@ -22,7 +21,9 @@ class BdaysDetailView(DetailView):
 
     def get_object(self):
         id_ = self.kwargs.get('id')
-        return get_object_or_404(BirthdayModel, id=id_)
+        obj = get_object_or_404(BirthdayModel, id=id_)
+        print(days_until_birthday(obj))
+        return obj
 
 
 class BdaysCreateView(CreateView):
