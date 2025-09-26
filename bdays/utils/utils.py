@@ -4,5 +4,6 @@ import datetime
 def days_until_birthday(person):
     today = datetime.date.today()
     birthday = datetime.date(today.year, person.date.month, person.date.day)
-    days_left = birthday - today
-    return days_left.days
+    n_birthday = datetime.date(today.year + 1, person.date.month, person.date.day)
+
+    return ((birthday if birthday > today else n_birthday) - today).days
