@@ -12,5 +12,6 @@
                 -
                 <a href="{% url 'bdays:bday-delete' object.id %}">delete</a>
         </p>
+    <p>days left until birthday: {{ days_left }}</p>
 </div>
 {% endblock %}

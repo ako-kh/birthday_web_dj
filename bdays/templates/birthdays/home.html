@@ -6,6 +6,7 @@
         <p>
             {{ person.name }} - {{ person.date }}
             -
+            days left: {{ person.days_left }}
             <a href="{% url 'bdays:bday-detail' person.id %}">Details</a>
         </p>
     {% endfor %}

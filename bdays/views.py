@@ -13,7 +13,20 @@ from .utils.utils import days_until_birthday
 
 class BdaysListView(ListView):
     template_name = "birthdays/home.html"
-    queryset = BirthdayModel.objects.all()
+
+    def get_queryset(self):
+        queryset = BirthdayModel.objects.all()
+        for person in  queryset:
+            person.days_left = days_until_birthday(person)
+        return queryset
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     days_left_dict = {}
+    #     for obj in self.queryset:
+    #         days_left_dict[obj.id] = days_until_birthday(obj)
+    #     context["days_left_dict"] = days_left_dict
+    #     return context
 
 
 class BdaysDetailView(DetailView):
@@ -21,9 +34,12 @@ class BdaysDetailView(DetailView):
 
     def get_object(self):
         id_ = self.kwargs.get('id')
-        obj = get_object_or_404(BirthdayModel, id=id_)
-        print(days_until_birthday(obj))
-        return obj
+        return get_object_or_404(BirthdayModel, id=id_)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["days_left"] = days_until_birthday(self.object)
+        return context
 
 
 class BdaysCreateView(CreateView):
