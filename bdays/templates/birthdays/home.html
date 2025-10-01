@@ -1,14 +1,61 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<section class="container d-flex justify-content-end">
+<div class="btn-group mb-3">
+  {% with sort_by=request.GET.sort_by|default:"" direction=request.GET.d|default:"asc" %}
 
+    {% if sort_by == "name" and direction == "asc" %}
+      <a href="?sort_by=name&d=desc" class="btn btn-outline-primary">Name ↓</a>
+    {% else %}
+      <a href="?sort_by=name&d=asc" class="btn btn-outline-primary">Name ↑</a>
+    {% endif %}
+
+    {% if sort_by == "date" and direction == "asc" %}
+      <a href="?sort_by=date&d=desc" class="btn btn-outline-primary">Date ↓</a>
+    {% else %}
+      <a href="?sort_by=date&d=asc" class="btn btn-outline-primary">Date ↑</a>
+    {% endif %}
+
+    {% if sort_by == "days_left" and direction == "asc" %}
+      <a href="?sort_by=days_left&d=desc" class="btn btn-outline-primary">Days Left ↓</a>
+    {% else %}
+      <a href="?sort_by=days_left&d=asc" class="btn btn-outline-primary">Days Left ↑</a>
+    {% endif %}
+
+  {% endwith %}
+</div>
+</section>
+
+<section class="container">
+    <div class="row">
     {% for person in object_list %}
-        <p>
-            {{ person.name }} - {{ person.date }}
-            -
-            days left: {{ person.days_left }}
-            <a href="{% url 'bdays:bday-detail' person.id %}">Details</a>
-        </p>
+
+    <div class="col-6 col-lg-4">
+        <div class="card mb-4">
+            <div class="card-header"
+            style ="
+                background-color:
+                    {% if person.days_left <= 7 %}
+                        red
+                    {% elif person.days_left <= 30 %}
+                        yellow
+                    {% else %}
+                        green
+                    {% endif %}
+                ">
+                <h5 class="card-title">{{ person.name }}</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Birthday: {{ person.date }}</p>
+                <p class="card-text">Days left until birthday: {{ person.days_left }}</p>
+                <a href="{% url 'bdays:bday-detail' person.id %}">Details</a>
+            </div>
+        </div>
+    </div>
+
     {% endfor %}
+        </div>
+</section>
 
 {% endblock %}

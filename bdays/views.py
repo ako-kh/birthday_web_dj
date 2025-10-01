@@ -10,23 +10,26 @@ from django.views.generic import (
 )
 from .models import BirthdayModel
 from .utils.utils import days_until_birthday
+import operator
 
 class BdaysListView(ListView):
     template_name = "birthdays/home.html"
 
     def get_queryset(self):
         queryset = BirthdayModel.objects.all()
-        for person in  queryset:
+        for person in queryset:
             person.days_left = days_until_birthday(person)
-        return queryset
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     days_left_dict = {}
-    #     for obj in self.queryset:
-    #         days_left_dict[obj.id] = days_until_birthday(obj)
-    #     context["days_left_dict"] = days_left_dict
-    #     return context
+        sort_by = self.request.GET.get('sort_by')
+
+        if sort_by in ['days_left', 'name', 'date']:
+            if self.request.GET.get('d', 'asc') == "desc":
+                direction = True
+            else:
+                direction = False
+
+            return sorted(queryset, key=operator.attrgetter(sort_by), reverse=direction)
+        return queryset
 
 
 class BdaysDetailView(DetailView):
